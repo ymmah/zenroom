@@ -172,7 +172,7 @@ zlib:
 
 lua53:
 	CC=${gcc} CFLAGS="${cflags} \
-	-DLUA_COMPAT_5_3 -DLUA_COMPAT_MODULE" \
+		-DLUA_COMPAT_5_3 -DLUA_COMPAT_MODULE -DLUA_COMPAT_MATHLIB" \
 	LDFLAGS="${ldflags}" AR="${ar}" RANLIB=${ranlib} \
 	make -C ${pwd}/lib/lua53/src ${platform}
 

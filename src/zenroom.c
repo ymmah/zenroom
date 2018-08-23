@@ -97,6 +97,12 @@ zenroom_t *ast_init(char *script);
 int  ast_parse(zenroom_t *Z);
 void ast_teardown(zenroom_t *Z);
 
+// prototypes from zen_lsp.c
+zenroom_t *lsp_init();
+int  lsp_start(zenroom_t *Z);
+void lsp_teardown(zenroom_t *Z);
+
+
 zenroom_t *zen_init(const char *conf,
 		char *keys, char *data) {
 	(void) conf;
@@ -335,15 +341,16 @@ int main(int argc, char **argv) {
 	int   verbosity           = 1;
 	int   interactive         = 0;
 	int   parseast            = 0;
+	int   startlsp            = 0;
 #if DEBUG == 1
 	int   unprotected         = 1;
 #else
 	int   unprotected         = 0;
 #endif
 	(void)unprotected; // remove warning
-	const char *short_options = "hdic:k:a:p:u";
+	const char *short_options = "hdilc:k:a:p:u";
 	const char *help          =
-		"Usage: zenroom [-dh] [ -i ] [ -c config ] [ -k keys ] [ -a data ] [ [ -p ] script.lua ]\n";
+		"Usage: zenroom [-dh] [ -l ] [ -i ] [ -c config ] [ -k keys ] [ -a data ] [ [ -p ] script.lua ]\n";
 	int pid, status, retval;
 	conffile   [0] = '\0';
 	scriptfile [0] = '\0';
@@ -382,6 +389,10 @@ int main(int argc, char **argv) {
 			parseast = 1;
 			snprintf(scriptfile,511,"%s",optarg);
 			break;
+		case 'l':
+			startlsp = 1;
+			unprotected = 1;
+			break;
 		case 'u':
 #if DEBUG == 1
 			unprotected = 1;
@@ -410,6 +421,14 @@ int main(int argc, char **argv) {
 		zenroom_t *ast = ast_init(script);
 		ast_parse(ast);
 		ast_teardown(ast);
+		return EXIT_SUCCESS;
+	}
+
+	if(startlsp) {
+		zenroom_t *lsp = lsp_init();
+		func(NULL,"lsp_start(%p)",lsp);
+		lsp_start(lsp);
+		lsp_teardown(lsp);
 		return EXIT_SUCCESS;
 	}
 
