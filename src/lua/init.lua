@@ -18,6 +18,7 @@ BIG    = require('zenroom_big')
 HASH   = require('zenroom_hash')
 H = HASH -- alias
 MSG    = require('msgpack')
+LPEG   = require('lpeg')
 
 -- override type to recognize zenroom's types
 luatype = type
