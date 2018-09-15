@@ -39,9 +39,10 @@ function zencode:step(text)
 	  if type(func) == "function" then
 		 local res = string.match(text, pattern)
 		 if res then
-			local args = {}
-			if type(res) == 'table' then args = res
-			else table.insert(args, res) end
+			local args = {}	-- handle multiple arguments in same string
+			for arg in string.gmatch(text,"'(%w+)'") do
+			   table.insert(args,arg)
+			end
 			self.id = self.id + 1
 			table.insert(self.matches,
 						 { id = self.id,
@@ -71,11 +72,8 @@ end
 
 function zencode:run()
    for i,x in pairs(self.matches) do
-	  print("Run: " .. x['source'])
-	  content(x.args)
 	  local ok, err = pcall(x.hook,table.unpack(x.args))
-	  if ok then print("OK: " .. x.source)
-	  else error(err) end
+	  if not ok then error(err) end
    end
 end
   

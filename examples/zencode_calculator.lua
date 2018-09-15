@@ -7,7 +7,7 @@ function Calculator:Reset ()
 end
 
 function Calculator:Enter (number)
-   table.insert(self.numbers, number)
+   table.insert(self.numbers, tonumber(number))
 end
 
 function Calculator:Add ()
@@ -23,22 +23,27 @@ Before(function()
 	  Calculator:Reset()
 end)
 
-Given("I have entered '(%w+)' into the calculator", function (number)
-         Calculator:Enter(tonumber(number))
+Given("I have entered '(%w+)' [^and]", function (number)
+         Calculator:Enter(number)
+end)
+
+Given("I have entered '(%w+)' and '(%w+)'", function (num1, num2)
+         Calculator:Enter(num1)
+         Calculator:Enter(num2)
 end)
 
 When("I press add", function ()
 		Calculator:Add()
 end)
 
-Then("the result should be '(%w+)' on the screen", function (number)
+Then("result should be '(%w+)'", function (number)
 		assert(Calculator.result == tonumber(number),
-			   "Expected " .. number .. ", was " .. Calculator.result)
+			   "Result was expected to be " .. number .. ", but was " .. Calculator.result)
+		print("Result is ".. Calculator.result)
 end)
 
 
 -- execution
-content(ZEN)
 print "=== Zencode begin"
 ZEN:begin()
 
@@ -51,13 +56,13 @@ Feature: Addition
 
   Scenario Outline: Add two numbers
     Given I have entered '1' into the calculator
-    And I have entered '1' into the calculator
+    And I have entered '2' into the calculator
+    And I have entered '3' and '4'
     When I press add
-    Then the result should be '2' on the screen
+    Then the result should be '10' on the screen
 ]]
 
 
 ZEN:parse(addition)
--- content(ZEN.matches)
-print("Matches: " .. #ZEN.matches)
+-- content(ZEN.matches[3])
 ZEN:run()
