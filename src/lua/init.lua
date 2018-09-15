@@ -3,7 +3,6 @@
 
 JSON   = require('json')
 SCHEMA = require('schema')
-S = SCHEMA -- alias
 RNG    = require('zenroom_rng')
 OCTET  = require('zenroom_octet')
 O = OCTET -- alias
@@ -18,7 +17,7 @@ BIG    = require('zenroom_big')
 HASH   = require('zenroom_hash')
 H = HASH -- alias
 MSG    = require('msgpack')
-LPEG   = require('lpeg')
+ZEN    = require('zencode')
 
 -- override type to recognize zenroom's types
 luatype = type
@@ -84,12 +83,12 @@ function map(data, fun)
 end
 
 -- validate against a schema
-function validate(data, schema)
+function validate(data, _schema)
    if(type(data) ~= "table") then
 	  error("validate: first argument is not a table, cannot process validation") return end
-   if(type(schema) ~= "function") then
+   if(type(_schema) ~= "function") then
 	  error("validate: second argument is not a function, invalid schema") return end
-   return SCHEMA.CheckSchema(data,schema)
+   return SCHEMA.CheckSchema(data,_schema)
 end
 
 function ECP2.G()         return ECP2.new() end
@@ -103,6 +102,8 @@ function help(module)
 	  print("example > help(ecp)")
 	  return
    end
+   if type(module)~='table' then
+	  print("no help available for object type: " .. type(module)) return end
    for k,v in pairs(module) do
 	  if type(v)~='table' and string.sub(k,1,1)~='_' then
 		 print("class method: "..k)
