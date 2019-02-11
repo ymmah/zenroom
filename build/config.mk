@@ -77,7 +77,7 @@ ldflags += -shared
 cflags += -fPIC ${cflags_protection} -DLIBRARY -D'ARCH=\"LINUX\"' -DARCH_LINUX -DARCH_ANDROID
 cflags += -DLUA_USE_DLOPEN -I${ndk}/sysroot/usr/include
 system := Android
-milagro_cmake_flags += -DCMAKE_SYSTEM_NAME=${system} -DCMAKE_ANDROID_NDK=${ndk} -DCMAKE_ANDROID_API=18
+milagro_cmake_flags += -DCMAKE_SYSTEM_NAME=${system} -DCMAKE_ANDROID_NDK=${ndk} -DCMAKE_ANDROID_API=22
 endif
 
 ifneq (,$(findstring android-arm,$(MAKECMDGOALS)))
