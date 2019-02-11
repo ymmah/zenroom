@@ -77,12 +77,12 @@ ldflags += -shared
 cflags += -fPIC ${cflags_protection} -DLIBRARY -D'ARCH=\"LINUX\"' -DARCH_LINUX -DARCH_ANDROID
 cflags += -DLUA_USE_DLOPEN -I${ndk}/sysroot/usr/include
 system := Android
-milagro_cmake_flags += -DCMAKE_SYSTEM_NAME=${system} -DCMAKE_ANDROID_NDK=${ndk}
+milagro_cmake_flags += -DCMAKE_SYSTEM_NAME=${system} -DCMAKE_ANDROID_NDK=${ndk} -DCMAKE_ANDROID_API=18
 endif
 
 ifneq (,$(findstring android-arm,$(MAKECMDGOALS)))
 target = arm-linux-androideabi
-sysroot = ${ndk}/platforms/android-21/arch-arm
+sysroot = ${ndk}/platforms/android-18/arch-arm
 ld = ${toolchain}/bin/${target}-link
 cflags += -I${ndk}/sysroot/usr/include/arm-linux-androideabi --target=armv7-none-linux-androideabi --gcc-toolchain=${ndk}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64 --sysroot=${sysroot}
 endif
@@ -90,7 +90,7 @@ endif
 ifneq (,$(findstring android-x86,$(MAKECMDGOALS)))
 target = x86
 ld = ${toolchain}/bin/${target}-link
-sysroot = ${ndk}/platforms/android-26/arch-x86
+sysroot = ${ndk}/platforms/android-18/arch-x86
 cflags += -I${ndk}/sysroot/usr/include/i686-linux-android --target=i686-linux-android --gcc-toolchain=${ndk}/toolchains/${target}-4.9/prebuilt/linux-x86_64 --sysroot=${sysroot}
 endif
 
