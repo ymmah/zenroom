@@ -84,7 +84,7 @@ ifneq (,$(findstring android-arm,$(MAKECMDGOALS)))
 target = arm-linux-androideabi
 sysroot = ${ndk}/platforms/android-18/arch-arm
 ld = ${toolchain}/bin/${target}-link
-cflags += -I${ndk}/sysroot/usr/include/arm-linux-androideabi --target=armv7-none-linux-androideabi --gcc-toolchain=${ndk}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64 --sysroot=${sysroot}
+# cflags += -I${ndk}/sysroot/usr/include/arm-linux-androideabi --target=armv7-none-linux-androideabi --gcc-toolchain=${ndk}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64 --sysroot=${sysroot}
 endif
 
 ifneq (,$(findstring android-x86,$(MAKECMDGOALS)))
